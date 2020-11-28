@@ -1,34 +1,30 @@
 const http = require('http');
 const express = require('express');
-const socketio = require('socket.io');
+const path = require('path');
+const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
 
 const PORT = 8000 || process.env.PORT;
 
-app.use(express.static('client'));
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+/**
+ * Middleware
+ */
+app.use(methodOverride('_method'));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-const candidates = {
-	0: { votes: 0, label: 'Male 1', color: randomRGB() },
-	1: { votes: 0, label: 'Male 2', color: randomRGB() },
-	2: { votes: 0, label: 'Male 3', color: randomRGB() },
-	3: { votes: 0, label: 'Male 4', color: randomRGB() },
-	4: { votes: 0, label: 'Male 5', color: randomRGB() },
-};
+/**
+ * View Engine
+ */
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
-io.on(`connection`, (socket) => {
-	io.emit('update', candidates);
-	socket.on('vote', (i) => {
-		if (candidates[i]) candidates[i].votes += 1;
-		console.log(candidates);
-		io.emit('update', candidates);
-	});
-});
+server.listen(PORT, () => console.log(`~~~Server running on port ${PORT}~~~`));
 
-function randomRGB() {
-	const r = () => (Math.random() * 256) >> 0;
-	return `rgb(${r()}, ${r()}, ${r()})`;
-}
+const setRoutes = require('./routes/index');
+const models = require('./config/db');
+
+setRoutes(app, server, models);
