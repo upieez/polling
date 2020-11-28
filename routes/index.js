@@ -1,9 +1,14 @@
-const routes = (app, server, models) => {
-	const controller = require('../controllers/index')(server, models);
+const routes = (app, server, db) => {
+	const { demo, second, voteMale } = require('../controllers/index')(
+		server,
+		db
+	);
 
-	app.get('/', controller.demo);
+	app.get('/', demo);
 
-	app.get('/result', controller.second);
+	app.get('/result', second);
+
+	app.post('/male', voteMale);
 };
 
 module.exports = routes;

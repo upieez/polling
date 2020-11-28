@@ -1,16 +1,23 @@
 const mysql = require('mysql');
 require('dotenv').config();
 
-const con = mysql.createConnection({
+const config = {
+	connectionLimit: 100,
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASS,
 	database: process.env.DB_NAME,
+};
+
+var pool = mysql.createPool(config);
+
+pool.on('acquire', function (connection) {
+	console.log('Connection %d acquired', connection.threadId);
 });
 
-con.connect(function (err) {
-	if (err) throw err;
-	console.log('Successfully Connected to the Database!');
-});
+const polls = require('../models/index')(pool);
 
-module.exports = con;
+module.exports = {
+	pool,
+	polls,
+};

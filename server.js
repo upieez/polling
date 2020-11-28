@@ -22,9 +22,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-server.listen(PORT, () => console.log(`~~~Server running on port ${PORT}~~~`));
+server.listen(PORT, () =>
+	console.log(`~~~ You are now listening and enjoying to port: ${PORT} ~~~`)
+);
 
 const setRoutes = require('./routes/index');
 const models = require('./config/db');
 
 setRoutes(app, server, models);
+
+let onClose = function () {
+	server.close(() => {
+		console.log('\nProcess terminated...');
+		models.pool.end(() =>
+			console.log('~~~ Shutting down db connection pool gracefully ~~~')
+		);
+	});
+};
+
+models.pool.on('release', function (connection) {
+	console.log('Connection %d released', connection.threadId);
+});
+
+process.on('SIGTERM', onClose);
+process.on('SIGINT', onClose);

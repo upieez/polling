@@ -29,8 +29,19 @@ module.exports = (server, db) => {
 		res.render('result');
 	};
 
+	const voteMale = function (req, res) {
+		let data = 'testing';
+
+		let callBack = (error, results) => {
+			if (error) throw error;
+			res.redirect(301, '/');
+		};
+		db.polls.postVote(callBack, data);
+	};
+
 	return {
 		demo,
 		second,
+		voteMale,
 	};
 };
