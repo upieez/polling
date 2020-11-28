@@ -13,8 +13,13 @@
 	},
 	"license": "ISC",
 	"dependencies": {
+		"cookie-parser": "^1.4.5",
+		"dotenv": "^8.2.0",
+		"ejs": "^3.1.5",
 		"express": "^4.17.1",
+		"method-override": "^3.0.0",
 		"moment": "^2.29.1",
+		"mysql": "^2.18.1",
 		"socket.io": "^3.0.3"
 	},
 	"devDependencies": {
