@@ -22,21 +22,21 @@ module.exports = (server, db) => {
 			const r = () => (Math.random() * 256) >> 0;
 			return `rgb(${r()}, ${r()}, ${r()})`;
 		}
-		res.render('index');
-	};
-
-	const second = function (_req, res) {
 		res.render('result');
 	};
 
-	const voteMale = function (req, res) {
-		let data = 'testing';
+	const second = function (_req, res) {
+		res.render('pages/male');
+	};
 
-		let callBack = (error, results) => {
+	const voteMale = function (req, res) {
+		let values = req.body;
+
+		let callBack = (error, _results) => {
 			if (error) throw error;
-			res.redirect(301, '/');
+			res.redirect(301, '/result');
 		};
-		db.polls.postVote(callBack, data);
+		db.polls.postVote(callBack, values);
 	};
 
 	return {

@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 const server = http.createServer(app);
@@ -14,6 +15,7 @@ const PORT = 8000 || process.env.PORT;
  */
 app.use(methodOverride('_method'));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
@@ -31,6 +33,9 @@ const models = require('./config/db');
 
 setRoutes(app, server, models);
 
+/**
+ * End connection
+ */
 let onClose = function () {
 	server.close(() => {
 		console.log('\nProcess terminated...');
