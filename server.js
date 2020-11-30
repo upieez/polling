@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const server = http.createServer(app);
+const io = require('socket.io')(server);
 
 const PORT = 8000 || process.env.PORT;
 
@@ -31,7 +32,7 @@ server.listen(PORT, () =>
 const setRoutes = require('./routes/index');
 const models = require('./config/db');
 
-setRoutes(app, server, models);
+setRoutes(app, io, models);
 
 /**
  * End connection

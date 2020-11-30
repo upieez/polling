@@ -1,5 +1,5 @@
-const routes = (app, server, db) => {
-	const controller = require('../controllers/index')(server, db);
+const routes = (app, io, db) => {
+	const controller = require('../controllers/index')(io, db);
 
 	app.get('/', controller.demo);
 
