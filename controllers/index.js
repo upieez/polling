@@ -11,7 +11,7 @@ module.exports = (io, db) => {
 		return `rgb(${r()}, ${r()}, ${r()})`;
 	}
 
-	const demo = function (_req, res) {
+	const result = function (_req, res) {
 		io.on(`connection`, (socket) => {
 			io.emit('update', candidates);
 			socket.on('vote', (i) => {
@@ -21,26 +21,44 @@ module.exports = (io, db) => {
 			});
 		});
 
-		res.render('result');
+		const callBack = (error, results) => {
+			if (error) throw error;
+			let result = {
+				allVotes: results,
+			};
+			res.render('pages/result', result);
+		};
+
+		db.polls.selectVotes(callBack, null);
 	};
 
-	const second = function (_req, res) {
-		res.render('pages/male');
-	};
+	const vote = function (req, res) {
+		const values = req.body;
 
-	const voteMale = function (req, res) {
-		let values = req.body;
-
-		let callBack = (error, _results) => {
+		const callBack = (error, _results) => {
 			if (error) throw error;
 			res.redirect(301, '/result');
 		};
 		db.polls.postVote(callBack, values);
 	};
 
+	const viewMale = function (req, res) {
+		res.render('pages/male');
+	};
+
+	const viewFemale = function (req, res) {
+		res.render('pages/female');
+	};
+
+	const viewGroup = function (req, res) {
+		res.render('pages/group');
+	};
+
 	return {
-		demo,
-		second,
-		voteMale,
+		result,
+		vote,
+		viewMale,
+		viewFemale,
+		viewGroup,
 	};
 };

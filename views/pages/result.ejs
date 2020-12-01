@@ -1,4 +1,4 @@
-<%- include('./templates/header'); -%>
+<%- include('../templates/header'); -%>
 
 <!-- The title -->
 <h1 style="text-align: center">
@@ -14,6 +14,7 @@
 <button onclick="vote(2)">PHP</button>
 <button onclick="vote(3)">Python</button>
 <button onclick="vote(4)">Go</button>
+<% console.log(allVotes) %>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -65,4 +66,4 @@
 	}
 </script>
 
-<%- include('./templates/footer'); -%>
+<%- include('../templates/footer'); -%>

@@ -1,11 +1,15 @@
 const routes = (app, io, db) => {
 	const controller = require('../controllers/index')(io, db);
 
-	app.get('/', controller.demo);
+	app.get('/result', controller.result);
 
-	app.get('/male', controller.second);
+	app.get('/male', controller.viewMale);
 
-	app.post('/male', controller.voteMale);
+	app.get('/female', controller.viewFemale);
+
+	app.get('/group', controller.viewGroup);
+
+	app.post('/vote', controller.vote);
 };
 
 module.exports = routes;
