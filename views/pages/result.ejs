@@ -1,20 +1,10 @@
 <%- include('../templates/header'); -%>
 
 <!-- The title -->
-<h1 style="text-align: center">
-	What is the best programming language out of these five?
-</h1>
+<h1 style="text-align: center">Graph Chart of Contestants</h1>
 
 <!-- The canvas -->
 <canvas id="voteChart" style="height: 50vh; width: 100vw"></canvas>
-
-<!-- The buttons -->
-<button onclick="vote(0)">JavaScript</button>
-<button onclick="vote(1)">C#</button>
-<button onclick="vote(2)">PHP</button>
-<button onclick="vote(3)">Python</button>
-<button onclick="vote(4)">Go</button>
-<% console.log(allVotes) %>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -30,14 +20,16 @@
 		options: {},
 	});
 
-	// Connect to the server it's (Here you want to change the port if you changed it in the server)
 	const socket = io();
+
+	function randomRGB() {
+		const r = () => (Math.random() * 256) >> 0;
+		return `rgb(${r()}, ${r()}, ${r()})`;
+	}
 
 	// On new vote update the chart
 	socket.on('update', (candidates) => {
-		// Convert the candidates object into an array
 		candidates = Object.entries(candidates);
-
 		// For each candidate
 		for (const [key, candidate] of candidates) {
 			// Update the vote if the candidate already exists if not create a new candidate and then update the vote
@@ -46,24 +38,19 @@
 				chart.data.datasets.length < candidates.length
 			) {
 				chart.data.datasets.push({
-					backgroundColor: candidate.color,
-					borderColor: candidate.color,
-					data: [candidate.votes],
-					label: candidate.label,
+					backgroundColor: randomRGB(),
+					borderColor: randomRGB(),
+					data: [candidate.Vote],
+					label: candidate.User,
 				});
 			} else if (typeof chart.data.datasets[key] != 'undefined') {
-				chart.data.datasets[key].data = [candidate.votes];
+				chart.data.datasets[key].data = [candidate.Vote];
 			}
 		}
 
 		// Update the chart
 		chart.update();
 	});
-
-	// Make a new vote (Remember this is not a safe way to do this)
-	function vote(index) {
-		socket.emit('vote', index);
-	}
 </script>
 
 <%- include('../templates/footer'); -%>
