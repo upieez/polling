@@ -1,7 +1,17 @@
 <%- include('../templates/header'); -%>
+<h1>Female</h1>
+
 <form action="/vote" method="post">
-	<button name="user" type="submit" value="FirstFemale">Female 1</button>
-	<button name="user" type="submit" value="SecondFemale">Female 2</button>
-	<button name="user" type="submit" value="ThirdFemale">Female 3</button>
+	<div class="contestant-selector">
+		<input id="first-female" type="radio" name="user" value="FirstFemale" />
+		<label class="contestant first-female" for="first-female"></label>
+
+		<input id="second-female" type="radio" name="user" value="SecondFemale" />
+		<label class="contestant second-female" for="second-female"></label>
+
+		<input id="third-female" type="radio" name="user" value="ThirdFemale" />
+		<label class="contestant third-female" for="third-female"></label>
+	</div>
+	<button type="submit">Submit</button>
 </form>
 <%- include('../templates/footer'); -%>
