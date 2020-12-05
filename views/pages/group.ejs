@@ -1,7 +1,11 @@
 <%- include('../templates/header'); -%>
 <form action="/vote" method="post">
-	<button name="user" type="submit" value="FirstGroup">Group 1</button>
-	<button name="user" type="submit" value="SecondGroup">Group 2</button>
-	<button name="user" type="submit" value="ThirdGroup">Group 3</button>
+	<input type="radio" name="user" id="FirstGroup" value="FirstGroup" />
+	<label for="FirstGroup">Group 1</label>
+	<input type="radio" name="user" id="SecondGroup" value="SecondGroup" />
+	<label for="SecondGroup">Group 2</label>
+	<input type="radio" name="user" id="ThirdGroup" value="ThirdGroup" />
+	<label for="ThirdGroup">Group 3</label>
+	<button type="submit">Submit</button>
 </form>
 <%- include('../templates/footer'); -%>

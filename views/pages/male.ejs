@@ -1,43 +1,11 @@
 <%- include('../templates/header'); -%>
-<div class="container">
-	<form action="/vote" method="post">
-		<div class="row h-100">
-			<div class="col-lg-12 my-auto">
-				<button
-					name="user"
-					type="submit"
-					value="FirstMale"
-					class="btn btn-primary btn-block"
-				>
-					Male 1
-				</button>
-			</div>
-		</div>
-		<div class="row h-100">
-			<div class="col-sm-12 my-auto">
-				<button
-					name="user"
-					type="submit"
-					value="SecondMale"
-					class="btn btn-primary btn-block"
-				>
-					Male 2
-				</button>
-			</div>
-		</div>
-		<div class="row h-100">
-			<div class="col-sm-12 my-auto">
-				<button
-					name="user"
-					type="submit"
-					value="ThirdMale"
-					class="btn btn-primary btn-block"
-				>
-					Male 3
-				</button>
-			</div>
-		</div>
-	</form>
-</div>
-
+<form action="/vote" method="post">
+	<input type="radio" name="user" id="FirstMale" value="FirstMale" />
+	<label for="FirstMale">Male 1</label>
+	<input type="radio" name="user" id="SecondMale" value="SecondMale" />
+	<label for="SecondMale">Male 2</label>
+	<input type="radio" name="user" id="ThirdMale" value="ThirdMale" />
+	<label for="ThirdMale">Male 3</label>
+	<button type="submit">Submit</button>
+</form>
 <%- include('../templates/footer'); -%>

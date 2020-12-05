@@ -18,7 +18,7 @@ module.exports = (db) => {
 		});
 	};
 
-	const postVote = (callback, values) => {
+	const postVote = (callback, values, io) => {
 		db.getConnection(function (err, connection) {
 			if (err) throw err; // not connected!
 
@@ -26,7 +26,14 @@ module.exports = (db) => {
 			let value = [values.user];
 
 			connection.query(query, value, function (error, results) {
-				connection.destroy();
+				connection.query('SELECT * FROM polls', function (error, results) {
+					io.on(`connection`, (_socket) => {
+						io.emit('update', results);
+					});
+
+					if (error) throw error;
+				});
+				connection.release();
 				callback(null, results);
 				// Handle error after the release.
 				if (error) throw error;
