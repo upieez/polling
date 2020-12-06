@@ -48,19 +48,43 @@ module.exports = (io, db) => {
 	const viewMale = function (req, res) {
 		const voted = req.cookies['votedMale'];
 		if (voted) return res.redirect('/result');
-		res.render('pages/male');
+		db.polls.selectVotes((error, results) => {
+			if (error) throw error;
+
+			const allowVote = results.filter((result) => result.User === 'admin');
+
+			allowVote[0].Vote === 0
+				? res.render('pages/male', results)
+				: res.redirect(301, '/result');
+		}, io);
 	};
 
 	const viewFemale = function (req, res) {
 		const voted = req.cookies['votedFemale'];
 		if (voted) return res.redirect('/result');
-		res.render('pages/female');
+		db.polls.selectVotes((error, results) => {
+			if (error) throw error;
+
+			const allowVote = results.filter((result) => result.User === 'admin');
+
+			allowVote[0].Vote === 0
+				? res.render('pages/female', results)
+				: res.redirect(301, '/result');
+		}, io);
 	};
 
 	const viewGroup = function (req, res) {
 		const voted = req.cookies['votedGroup'];
 		if (voted) return res.redirect('/result');
-		res.render('pages/group');
+		db.polls.selectVotes((error, results) => {
+			if (error) throw error;
+
+			const allowVote = results.filter((result) => result.User === 'admin');
+
+			allowVote[0].Vote === 0
+				? res.render('pages/group', results)
+				: res.redirect(301, '/result');
+		}, io);
 	};
 
 	return {
