@@ -1,19 +1,45 @@
 <%- include('../templates/header'); -%>
-<h1>Female</h1>
 
-<form action="/vote" method="post">
-	<div class="contestant-selector">
-		<input id="first-female" type="radio" name="user" value="FirstFemale" />
-		<label class="contestant first-female" for="first-female"></label>
+<div class="container">
+	<h1>Female Category</h1>
+	<form action="/vote" method="post">
+		<div class="contestant-selector">
+			<div class="image-container">
+				<h2>A</h2>
+				<input
+					id="first-female"
+					type="radio"
+					name="user"
+					value="FirstFemale"
+					checked
+				/>
+				<label class="contestant first-female" for="first-female"></label>
+			</div>
+			<div class="image-container">
+				<h2>B</h2>
+				<input
+					id="second-female"
+					type="radio"
+					name="user"
+					value="SecondFemale"
+				/>
+				<label class="contestant second-female" for="second-female"></label>
+			</div>
+			<div class="image-container">
+				<h2>C</h2>
+				<input id="third-female" type="radio" name="user" value="ThirdFemale" />
+				<label class="contestant third-female" for="third-female"></label>
+			</div>
 
-		<input id="second-female" type="radio" name="user" value="SecondFemale" />
-		<label class="contestant second-female" for="second-female"></label>
-
-		<input id="third-female" type="radio" name="user" value="ThirdFemale" />
-		<label class="contestant third-female" for="third-female"></label>
-
-		<input type="hidden" name="female" value="female" />
-	</div>
-	<button type="submit">Submit</button>
-</form>
+			<input type="hidden" name="female" value="female" />
+		</div>
+		<div class="row">
+			<div class="col text-center">
+				<button type="submit" class="btn btn-success btn-lg btn-block">
+					Submit Vote
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
 <%- include('../templates/footer'); -%>

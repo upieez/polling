@@ -1,14 +1,34 @@
+* {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.contestant-selector {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.image-container {
+	width: 450px;
+}
+
+@media only screen and (min-width: 768px) {
+	/* For desktop: */
+	.image-container {
+		width: 415px;
+	}
+
+	.contestant {
+		height: 290px;
+	}
+}
+
 .contestant-selector input {
 	margin: 0;
 	padding: 0;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-}
-
-.contestant-selector-2 input {
-	position: absolute;
-	z-index: 999;
 }
 
 .first-female {
@@ -26,17 +46,52 @@
 	background-size: cover;
 }
 
-.contestant-selector-2 input:active + .contestant,
+.first-male {
+	background-image: url('../assets/male1.jpeg');
+	background-size: cover;
+}
+
+.second-male {
+	background-image: url('../assets/male2.jpeg');
+	background-size: cover;
+}
+
+.third-male {
+	background-image: url('../assets/male3.jpeg');
+	background-size: cover;
+}
+
+.first-group {
+	background-image: url('../assets/group1.jpeg');
+	background-size: cover;
+}
+
+.second-group {
+	background-image: url('../assets/group2.jpeg');
+	background-size: cover;
+}
+
+.third-group {
+	background-image: url('../assets/group3.jpeg');
+	background-size: cover;
+}
+
 .contestant-selector input:active + .contestant {
 	opacity: 0.9;
 }
 
-.contestant-selector-2 input:checked + .contestant,
 .contestant-selector input:checked + .contestant {
 	-webkit-filter: none;
 	-moz-filter: none;
 	filter: none;
 }
+
+/* .contestant-selector-2 input:not(:checked) + .contestant,
+.contestant-selector input:not(:checked) + .contestant {
+	-webkit-filter: brightness(1.8) grayscale(1) opacity(0.7);
+	-moz-filter: brightness(1.8) grayscale(1) opacity(0.7);
+	filter: brightness(1.8) grayscale(1) opacity(0.7);
+} */
 
 .contestant {
 	cursor: pointer;
@@ -45,8 +100,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 900px;
-	height: 600px;
+	height: 270px;
 	-webkit-transition: all 100ms ease-in;
 	-moz-transition: all 100ms ease-in;
 	transition: all 100ms ease-in;
@@ -59,22 +113,4 @@
 	-webkit-filter: brightness(1.2) grayscale(0.5) opacity(0.9);
 	-moz-filter: brightness(1.2) grayscale(0.5) opacity(0.9);
 	filter: brightness(1.2) grayscale(0.5) opacity(0.9);
-}
-
-/* Extras */
-
-a:visited {
-	color: #888;
-}
-
-a {
-	color: #444;
-	text-decoration: none;
-}
-
-p {
-	margin-bottom: 1em;
-}
-div {
-	padding: 1em;
 }

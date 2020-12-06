@@ -1,12 +1,40 @@
 <%- include('../templates/header'); -%>
-<form action="/vote" method="post">
-	<input type="radio" name="user" id="FirstGroup" value="FirstGroup" />
-	<label for="FirstGroup">Group 1</label>
-	<input type="radio" name="user" id="SecondGroup" value="SecondGroup" />
-	<label for="SecondGroup">Group 2</label>
-	<input type="radio" name="user" id="ThirdGroup" value="ThirdGroup" />
-	<label for="ThirdGroup">Group 3</label>
-	<input type="hidden" name="group" value="group" />
-	<button type="submit">Submit</button>
-</form>
+
+<div class="container">
+	<h1>Family Category</h1>
+	<form action="/vote" method="post">
+		<div class="contestant-selector">
+			<div class="image-container">
+				<h2>A</h2>
+				<input
+					id="first-group"
+					type="radio"
+					name="user"
+					value="FirstGroup"
+					checked
+				/>
+				<label class="contestant first-group" for="first-group"></label>
+			</div>
+			<div class="image-container">
+				<h2>B</h2>
+				<input id="second-group" type="radio" name="user" value="SecondGroup" />
+				<label class="contestant second-group" for="second-group"></label>
+			</div>
+			<div class="image-container">
+				<h2>C</h2>
+				<input id="third-group" type="radio" name="user" value="ThirdGroup" />
+				<label class="contestant third-group" for="third-group"></label>
+			</div>
+
+			<input type="hidden" name="group" value="group" />
+		</div>
+		<div class="row">
+			<div class="col text-center">
+				<button type="submit" class="btn btn-success btn-lg btn-block">
+					Submit Vote
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
 <%- include('../templates/footer'); -%>

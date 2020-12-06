@@ -1,21 +1,43 @@
 <%- include('../templates/header'); -%>
 
 <!-- The title -->
-<h1 style="text-align: center">Graph Chart of Contestants</h1>
+<h1 style="text-align: center">Results</h1>
 
 <!-- The canvas -->
-<canvas id="voteChart" style="height: 50vh; width: 100vw"></canvas>
+<canvas id="voteFemale"></canvas>
+
+<canvas id="voteMale"></canvas>
+
+<canvas id="voteGroup"></canvas>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 	// Initialize the canvas
-	const ctx = document.getElementById('voteChart').getContext('2d');
+	const maleCtx = document.getElementById('voteMale').getContext('2d');
+	const femaleCtx = document.getElementById('voteFemale').getContext('2d');
+	const groupCtx = document.getElementById('voteGroup').getContext('2d');
 
 	// Initialize the chart
-	const chart = new Chart(ctx, {
+	const maleChart = new Chart(maleCtx, {
 		type: 'bar',
 		data: {
-			labels: ['Candidates'],
+			labels: ['Male'],
+		},
+		options: {},
+	});
+
+	const femaleChart = new Chart(femaleCtx, {
+		type: 'bar',
+		data: {
+			labels: ['Female'],
+		},
+		options: {},
+	});
+
+	const groupChart = new Chart(groupCtx, {
+		type: 'bar',
+		data: {
+			labels: ['Family'],
 		},
 		options: {},
 	});
@@ -29,27 +51,103 @@
 
 	// On new vote update the chart
 	socket.on('update', (candidates) => {
-		candidates = Object.entries(candidates);
-		// For each candidate
-		for (const [key, candidate] of candidates) {
+		let maleUser = candidates.filter(
+			(candidate) =>
+				candidate.User === 'FirstMale' ||
+				candidate.User === 'SecondMale' ||
+				candidate.User === 'ThirdMale'
+		);
+		let femaleUser = candidates.filter(
+			(candidate) =>
+				candidate.User === 'FirstFemale' ||
+				candidate.User === 'SecondFemale' ||
+				candidate.User === 'ThirdFemale'
+		);
+		let groupUser = candidates.filter(
+			(candidate) =>
+				candidate.User === 'FirstGroup' ||
+				candidate.User === 'SecondGroup' ||
+				candidate.User === 'ThirdGroup'
+		);
+
+		maleUser = Object.entries(maleUser);
+		femaleUser = Object.entries(femaleUser);
+		groupUser = Object.entries(groupUser);
+
+		for (const [key, candidate] of femaleUser) {
 			// Update the vote if the candidate already exists if not create a new candidate and then update the vote
+
+			let contestantName;
+			if (candidate.User === 'FirstFemale') contestantName = 'Female A';
+			if (candidate.User === 'SecondFemale') contestantName = 'Female B';
+			if (candidate.User === 'ThirdFemale') contestantName = 'Female C';
+
 			if (
-				typeof chart.data.datasets[key] == 'undefined' &&
-				chart.data.datasets.length < candidates.length
+				typeof femaleChart.data.datasets[key] == 'undefined' &&
+				femaleChart.data.datasets.length < candidates.length
 			) {
-				chart.data.datasets.push({
+				femaleChart.data.datasets.push({
 					backgroundColor: randomRGB(),
 					borderColor: randomRGB(),
 					data: [candidate.Vote],
-					label: candidate.User,
+					label: contestantName,
 				});
-			} else if (typeof chart.data.datasets[key] != 'undefined') {
-				chart.data.datasets[key].data = [candidate.Vote];
+			} else if (typeof femaleChart.data.datasets[key] != 'undefined') {
+				femaleChart.data.datasets[key].data = [candidate.Vote];
+			}
+		}
+
+		// For each candidate
+		for (const [key, candidate] of maleUser) {
+			// Update the vote if the candidate already exists if not create a new candidate and then update the vote
+
+			let contestantName;
+			if (candidate.User === 'FirstMale') contestantName = 'Male A';
+			if (candidate.User === 'SecondMale') contestantName = 'Male B';
+			if (candidate.User === 'ThirdMale') contestantName = 'Male C';
+
+			if (
+				typeof maleChart.data.datasets[key] == 'undefined' &&
+				maleChart.data.datasets.length < candidates.length
+			) {
+				maleChart.data.datasets.push({
+					backgroundColor: randomRGB(),
+					borderColor: randomRGB(),
+					data: [candidate.Vote],
+					label: contestantName,
+				});
+			} else if (typeof maleChart.data.datasets[key] != 'undefined') {
+				maleChart.data.datasets[key].data = [candidate.Vote];
+			}
+		}
+
+		for (const [key, candidate] of groupUser) {
+			// Update the vote if the candidate already exists if not create a new candidate and then update the vote
+
+			let contestantName;
+			if (candidate.User === 'FirstGroup') contestantName = 'Family A';
+			if (candidate.User === 'SecondGroup') contestantName = 'Family B';
+			if (candidate.User === 'ThirdGroup') contestantName = 'Family C';
+
+			if (
+				typeof groupChart.data.datasets[key] == 'undefined' &&
+				groupChart.data.datasets.length < candidates.length
+			) {
+				groupChart.data.datasets.push({
+					backgroundColor: randomRGB(),
+					borderColor: randomRGB(),
+					data: [candidate.Vote],
+					label: contestantName,
+				});
+			} else if (typeof groupChart.data.datasets[key] != 'undefined') {
+				groupChart.data.datasets[key].data = [candidate.Vote];
 			}
 		}
 
 		// Update the chart
-		chart.update();
+		femaleChart.update();
+		maleChart.update();
+		groupChart.update();
 	});
 </script>
 
