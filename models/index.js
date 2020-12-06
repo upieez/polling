@@ -1,18 +1,17 @@
 module.exports = (db) => {
 	const selectVotes = (callback, io) => {
-		db.getConnection(function (err, connection) {
-			if (err) throw err; // not connected!
+		db.getConnection((err, connection) => {
+			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
 
 			let query = 'SELECT * FROM polls';
 
-			connection.query(query, function (error, results) {
+			connection.query(query, (error, results) => {
 				io.on(`connection`, (_socket) => {
 					io.emit('update', results);
 				});
 				connection.release();
-				callback(null, results);
 				// Handle error after the release.
-				if (error) throw error;
+				error ? callback(error, null) : callback(null, results);
 				// Do not use anything here
 			});
 		});
@@ -20,23 +19,23 @@ module.exports = (db) => {
 
 	const postVote = (callback, values, io) => {
 		db.getConnection(function (err, connection) {
-			if (err) throw err; // not connected!
+			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
 
 			let query = 'UPDATE polls SET Vote = Vote + 1 WHERE User = ?';
 			let value = [values.user];
 
-			connection.query(query, value, function (error, results) {
-				connection.query('SELECT * FROM polls', function (error, results) {
+			connection.query(query, value, (error, results) => {
+				connection.query('SELECT * FROM polls', (e, selectResults) => {
 					io.on(`connection`, (_socket) => {
-						io.emit('update', results);
+						io.emit('update', selectResults);
 					});
 
-					if (error) throw error;
+					if (e) throw `SELECT IN INSERT ERROR: ${e}`;
 				});
+
 				connection.release();
-				callback(null, results);
 				// Handle error after the release.
-				if (error) throw error;
+				error ? callback(error, null) : callback(null, results);
 				// Do not use anything here and below
 			});
 		});

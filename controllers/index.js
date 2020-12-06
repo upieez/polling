@@ -18,10 +18,26 @@ module.exports = (io, db) => {
 	const vote = function (req, res) {
 		try {
 			const values = req.body;
-			const callBack = (error, results) => {
+
+			const callBack = (error, _results) => {
 				if (error) throw error;
-				res.cookie('voted', true);
-				res.redirect(301, '/result');
+
+				if (values.female) {
+					res.cookie('votedFemale', true);
+					return res.redirect(301, '/male');
+				}
+
+				if (values.male) {
+					res.cookie('votedMale', true);
+					return res.redirect(301, '/group');
+				}
+
+				if (values.group) {
+					res.cookie('votedGroup', true);
+					return res.redirect(301, '/result');
+				}
+
+				return res.redirect(301, '/result'); // FALLBACK
 			};
 			db.polls.postVote(callBack, values, io);
 		} catch (e) {
@@ -30,20 +46,20 @@ module.exports = (io, db) => {
 	};
 
 	const viewMale = function (req, res) {
-		const voted = req.cookies['voted'];
-		if (voted) res.redirect('/result');
+		const voted = req.cookies['votedMale'];
+		if (voted) return res.redirect('/result');
 		res.render('pages/male');
 	};
 
 	const viewFemale = function (req, res) {
-		const voted = req.cookies['voted'];
-		if (voted) res.redirect('/result');
+		const voted = req.cookies['votedFemale'];
+		if (voted) return res.redirect('/result');
 		res.render('pages/female');
 	};
 
 	const viewGroup = function (req, res) {
-		const voted = req.cookies['voted'];
-		if (voted) res.redirect('/result');
+		const voted = req.cookies['votedGroup'];
+		if (voted) return res.redirect('/result');
 		res.render('pages/group');
 	};
 
