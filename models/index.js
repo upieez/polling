@@ -1,4 +1,6 @@
 module.exports = (db) => {
+	let beforeUpdatedResult;
+
 	const selectVotes = (callback, io) => {
 		db.getConnection((err, connection) => {
 			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
@@ -6,8 +8,12 @@ module.exports = (db) => {
 			let query = 'SELECT * FROM polls';
 
 			connection.query(query, (error, results) => {
-				io.on(`connection`, (_socket) => {
+				beforeUpdatedResult = results;
+				io.on(`connection`, (socket) => {
 					io.emit('update', results);
+					socket.on('disconnect', () => {
+						console.log('someone disconnected');
+					});
 				});
 				connection.release();
 				// Handle error after the release.
@@ -25,12 +31,9 @@ module.exports = (db) => {
 			let value = [values.user];
 
 			connection.query(query, value, (error, results) => {
-				connection.query('SELECT * FROM polls', (e, selectResults) => {
-					io.on(`connection`, (_socket) => {
-						io.emit('update', selectResults);
-					});
-
-					if (e) throw `SELECT IN INSERT ERROR: ${e}`;
+				connection.query('SELECT * FROM polls', (_e, selectResults) => {
+					io.emit('update', beforeUpdatedResult);
+					io.emit('update', selectResults);
 				});
 
 				connection.release();
