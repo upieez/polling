@@ -1,7 +1,12 @@
 <%- include('../templates/header'); -%>
 
 <div class="container">
-	<h1>Family Category</h1>
+	<h1 class="mt-4">Family Category</h1>
+
+	<div class="alert alert-info mt-3 mb-4" role="alert">
+		Please select the contestant you like and click next
+	</div>
+
 	<form action="/vote" method="post">
 		<div class="contestant-selector">
 			<div class="image-container">
@@ -33,9 +38,9 @@
 				<button
 					id="groupBtn"
 					type="submit"
-					class="btn btn-success btn-lg btn-block"
+					class="btn btn-success btn-lg btn-block mb-5"
 				>
-					Submit Vote
+					Next
 				</button>
 			</div>
 		</div>
@@ -46,6 +51,8 @@
 	groupBtn.addEventListener('click', () => {
 		setTimeout(() => {
 			groupBtn.disabled = true;
+			groupBtn.innerHTML =
+				'<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
 		}, 0);
 	});
 </script>

@@ -44,18 +44,18 @@
 	};
 
 	// Initialize the chart
-	const maleChart = new Chart(maleCtx, {
-		type: 'bar',
-		data: {
-			labels: ['Male'],
-		},
-		options: options,
-	});
-
 	const femaleChart = new Chart(femaleCtx, {
 		type: 'bar',
 		data: {
 			labels: ['Female'],
+		},
+		options: options,
+	});
+
+	const maleChart = new Chart(maleCtx, {
+		type: 'bar',
+		data: {
+			labels: ['Male'],
 		},
 		options: options,
 	});
@@ -77,17 +77,17 @@
 
 	// On new vote update the chart
 	socket.on('update', (candidates) => {
-		let maleUser = candidates.filter(
-			(candidate) =>
-				candidate.User === 'FirstMale' ||
-				candidate.User === 'SecondMale' ||
-				candidate.User === 'ThirdMale'
-		);
 		let femaleUser = candidates.filter(
 			(candidate) =>
 				candidate.User === 'FirstFemale' ||
 				candidate.User === 'SecondFemale' ||
 				candidate.User === 'ThirdFemale'
+		);
+		let maleUser = candidates.filter(
+			(candidate) =>
+				candidate.User === 'FirstMale' ||
+				candidate.User === 'SecondMale' ||
+				candidate.User === 'ThirdMale'
 		);
 		let groupUser = candidates.filter(
 			(candidate) =>
@@ -96,8 +96,8 @@
 				candidate.User === 'ThirdGroup'
 		);
 
-		maleUser = Object.entries(maleUser);
 		femaleUser = Object.entries(femaleUser);
+		maleUser = Object.entries(maleUser);
 		groupUser = Object.entries(groupUser);
 
 		for (const [key, candidate] of femaleUser) {

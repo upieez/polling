@@ -9,11 +9,8 @@ module.exports = (db) => {
 
 			connection.query(query, (error, results) => {
 				beforeUpdatedResult = results;
-				io.on(`connection`, (socket) => {
+				io.on(`connection`, (_socket) => {
 					io.emit('update', results);
-					socket.on('disconnect', () => {
-						console.log('someone disconnected');
-					});
 				});
 				connection.release();
 				// Handle error after the release.
