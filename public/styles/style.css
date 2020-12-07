@@ -114,3 +114,10 @@
 	-moz-filter: brightness(1.2) grayscale(0.5) opacity(0.9);
 	filter: brightness(1.2) grayscale(0.5) opacity(0.9);
 }
+
+.bar-chart {
+	height: 40vh;
+	margin-top: 35px;
+	margin-bottom: 35px;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
