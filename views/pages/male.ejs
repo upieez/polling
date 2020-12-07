@@ -30,11 +30,23 @@
 		</div>
 		<div class="row">
 			<div class="col text-center">
-				<button type="submit" class="btn btn-success btn-lg btn-block">
+				<button
+					id="maleBtn"
+					type="submit"
+					class="btn btn-success btn-lg btn-block"
+				>
 					Submit Vote
 				</button>
 			</div>
 		</div>
 	</form>
 </div>
+<script>
+	const maleBtn = document.querySelector('#maleBtn');
+	maleBtn.addEventListener('click', () => {
+		setTimeout(() => {
+			maleBtn.disabled = true;
+		}, 0);
+	});
+</script>
 <%- include('../templates/footer'); -%>
