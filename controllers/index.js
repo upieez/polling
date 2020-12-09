@@ -87,11 +87,22 @@ module.exports = (io, db) => {
 		}, io);
 	};
 
+	const viewWinner = function (_req, res) {
+		res.render('pages/winner', { deck: deck });
+	};
+
+	const notFound = function (_req, res) {
+		res.status(404);
+		res.render('pages/404');
+	};
+
 	return {
 		result,
 		vote,
 		viewMale,
 		viewFemale,
 		viewGroup,
+		viewWinner,
+		notFound,
 	};
 };

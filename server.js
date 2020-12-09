@@ -43,6 +43,10 @@ const models = require('./config/db');
 
 setRoutes(app, io, models);
 
+app.use(function (_req, res) {
+	res.status(404).redirect('/error');
+});
+
 /**
  * End connection
  */
