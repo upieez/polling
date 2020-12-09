@@ -9,6 +9,8 @@ const routes = (app, io, db) => {
 
 	app.get('/group', controller.viewGroup);
 
+	app.get('/thankyou', controller.viewGratitude);
+
 	app.get('/winner', controller.viewWinner);
 
 	app.post('/vote', controller.vote);

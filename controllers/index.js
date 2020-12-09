@@ -34,10 +34,10 @@ module.exports = (io, db) => {
 
 				if (values.group) {
 					res.cookie('votedGroup', true);
-					return res.redirect(301, '/result');
+					return res.redirect(301, '/thankyou');
 				}
 
-				return res.redirect(301, '/result'); // FALLBACK
+				return res.redirect(301, '/thankyou'); // FALLBACK
 			};
 			db.polls.postVote(callBack, values, io);
 		} catch (e) {
@@ -47,7 +47,7 @@ module.exports = (io, db) => {
 
 	const viewMale = function (req, res) {
 		const voted = req.cookies['votedMale'];
-		if (voted) return res.redirect('/result');
+		if (voted) return res.redirect('/thankyou');
 		db.polls.selectVotes((error, results) => {
 			if (error) throw error;
 
@@ -55,13 +55,13 @@ module.exports = (io, db) => {
 
 			allowVote[0].Vote === 0
 				? res.render('pages/male', results)
-				: res.redirect(301, '/result');
+				: res.redirect(301, '/thankyou');
 		}, io);
 	};
 
 	const viewFemale = function (req, res) {
 		const voted = req.cookies['votedFemale'];
-		if (voted) return res.redirect('/result');
+		if (voted) return res.redirect('/thankyou');
 		db.polls.selectVotes((error, results) => {
 			if (error) throw error;
 
@@ -69,13 +69,13 @@ module.exports = (io, db) => {
 
 			allowVote[0].Vote === 0
 				? res.render('pages/female', results)
-				: res.redirect(301, '/result');
+				: res.redirect(301, '/thankyou');
 		}, io);
 	};
 
 	const viewGroup = function (req, res) {
 		const voted = req.cookies['votedGroup'];
-		if (voted) return res.redirect('/result');
+		if (voted) return res.redirect('/thankyou');
 		db.polls.selectVotes((error, results) => {
 			if (error) throw error;
 
@@ -83,8 +83,12 @@ module.exports = (io, db) => {
 
 			allowVote[0].Vote === 0
 				? res.render('pages/group', results)
-				: res.redirect(301, '/result');
+				: res.redirect(301, '/thankyou');
 		}, io);
+	};
+
+	const viewGratitude = function (_req, res) {
+		res.render('pages/thankyou');
 	};
 
 	const viewWinner = function (_req, res) {
@@ -104,5 +108,6 @@ module.exports = (io, db) => {
 		viewGroup,
 		viewWinner,
 		notFound,
+		viewGratitude,
 	};
 };
