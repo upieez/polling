@@ -24,6 +24,15 @@ const routes = (app, io, db) => {
 		controller.viewAdmin
 	);
 
+	app.get(
+		'/epson',
+		basicAuth({
+			challenge: true,
+			users: { epson: 'epsonprinter' },
+		}),
+		controller.viewClient
+	);
+
 	app.post('/vote', controller.vote);
 
 	app.post('/disableResult', controller.disableResult);

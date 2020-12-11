@@ -154,6 +154,23 @@ module.exports = (io, db) => {
 		}
 	};
 
+	const viewClient = function (req, res) {
+		try {
+			const callBack = (error, results) => {
+				if (error) throw error;
+				let result = {
+					allVotes: results,
+				};
+
+				res.render('pages/client', result);
+			};
+
+			db.polls.selectVotes(callBack, io);
+		} catch (e) {
+			throw `ERROR FOUND! ERROR IS : ${e}`;
+		}
+	};
+
 	return {
 		result,
 		vote,
@@ -166,5 +183,6 @@ module.exports = (io, db) => {
 		viewGratitude,
 		disableResult,
 		disableVote,
+		viewClient,
 	};
 };
