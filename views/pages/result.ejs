@@ -70,11 +70,6 @@
 
 	const socket = io();
 
-	function randomRGB() {
-		const r = () => (Math.random() * 256) >> 0;
-		return `rgb(${r()}, ${r()}, ${r()})`;
-	}
-
 	// On new vote update the chart
 	socket.on('update', (candidates) => {
 		let femaleUser = candidates.filter(
@@ -108,13 +103,19 @@
 			if (candidate.User === 'SecondFemale') contestantName = 'Female B';
 			if (candidate.User === 'ThirdFemale') contestantName = 'Female C';
 
+			let color = [
+				'rgba(207, 21, 120, 1)',
+				'rgba(232, 210, 29, 1)',
+				'rgba(178, 2, 56, 1)',
+			];
+
 			if (
 				typeof femaleChart.data.datasets[key] == 'undefined' &&
 				femaleChart.data.datasets.length < candidates.length
 			) {
 				femaleChart.data.datasets.push({
-					backgroundColor: randomRGB(),
-					borderColor: randomRGB(),
+					backgroundColor: color[key],
+					borderColor: color[key],
 					data: [candidate.Vote],
 					label: contestantName,
 				});
@@ -132,13 +133,19 @@
 			if (candidate.User === 'SecondMale') contestantName = 'Male B';
 			if (candidate.User === 'ThirdMale') contestantName = 'Male C';
 
+			let color = [
+				'rgba(239, 157, 16, 1)',
+				'rgba(59, 77, 97, 1)',
+				'rgba(30, 39, 97, 1)',
+			];
+
 			if (
 				typeof maleChart.data.datasets[key] == 'undefined' &&
 				maleChart.data.datasets.length < candidates.length
 			) {
 				maleChart.data.datasets.push({
-					backgroundColor: randomRGB(),
-					borderColor: randomRGB(),
+					backgroundColor: color[key],
+					borderColor: color[key],
 					data: [candidate.Vote],
 					label: contestantName,
 				});
@@ -155,13 +162,19 @@
 			if (candidate.User === 'SecondGroup') contestantName = 'Family B';
 			if (candidate.User === 'ThirdGroup') contestantName = 'Family C';
 
+			let color = [
+				'rgba(174, 214, 220, 1)',
+				'rgba(255, 154, 141, 1)',
+				'rgba(119, 197, 147, 1)',
+			];
+
 			if (
 				typeof groupChart.data.datasets[key] == 'undefined' &&
 				groupChart.data.datasets.length < candidates.length
 			) {
 				groupChart.data.datasets.push({
-					backgroundColor: randomRGB(),
-					borderColor: randomRGB(),
+					backgroundColor: color[key],
+					borderColor: color[key],
 					data: [candidate.Vote],
 					label: contestantName,
 				});
