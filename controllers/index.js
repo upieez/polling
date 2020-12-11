@@ -3,9 +3,19 @@ module.exports = (io, db) => {
 		try {
 			const callBack = (error, results) => {
 				if (error) throw error;
+
+				const disableResult = results.find(
+					(result) => result.User === 'disableResult'
+				);
+
+				if (disableResult.Vote) {
+					res.render('pages/thankyou');
+				}
+
 				let result = {
 					allVotes: results,
 				};
+
 				res.render('pages/result', result);
 			};
 
@@ -45,30 +55,34 @@ module.exports = (io, db) => {
 		}
 	};
 
-	const viewMale = function (req, res) {
-		const voted = req.cookies['votedMale'];
-		if (voted) return res.redirect('/thankyou');
-		db.polls.selectVotes((error, results) => {
-			if (error) throw error;
-
-			const allowVote = results.filter((result) => result.User === 'admin');
-
-			allowVote[0].Vote === 0
-				? res.render('pages/male', results)
-				: res.redirect(301, '/thankyou');
-		}, io);
-	};
-
 	const viewFemale = function (req, res) {
 		const voted = req.cookies['votedFemale'];
 		if (voted) return res.redirect('/thankyou');
 		db.polls.selectVotes((error, results) => {
 			if (error) throw error;
 
-			const allowVote = results.filter((result) => result.User === 'admin');
+			const disableVote = results.find(
+				(result) => result.User === 'disableVote'
+			);
 
-			allowVote[0].Vote === 0
+			!disableVote.Vote
 				? res.render('pages/female', results)
+				: res.redirect(301, '/thankyou');
+		}, io);
+	};
+
+	const viewMale = function (req, res) {
+		const voted = req.cookies['votedMale'];
+		if (voted) return res.redirect('/thankyou');
+		db.polls.selectVotes((error, results) => {
+			if (error) throw error;
+
+			const disableVote = results.find(
+				(result) => result.User === 'disableVote'
+			);
+
+			!disableVote.Vote
+				? res.render('pages/male', results)
 				: res.redirect(301, '/thankyou');
 		}, io);
 	};
@@ -79,9 +93,11 @@ module.exports = (io, db) => {
 		db.polls.selectVotes((error, results) => {
 			if (error) throw error;
 
-			const allowVote = results.filter((result) => result.User === 'admin');
+			const disableVote = results.find(
+				(result) => result.User === 'disableVote'
+			);
 
-			allowVote[0].Vote === 0
+			!disableVote.Vote
 				? res.render('pages/group', results)
 				: res.redirect(301, '/thankyou');
 		}, io);
@@ -92,12 +108,50 @@ module.exports = (io, db) => {
 	};
 
 	const viewWinner = function (_req, res) {
-		res.render('pages/winner', { deck: deck });
+		res.render('pages/winner');
 	};
 
 	const notFound = function (_req, res) {
 		res.status(404);
 		res.render('pages/404');
+	};
+
+	const disableResult = function (req, res) {
+		const callBack = (error, _results) => {
+			if (error) throw error;
+			io.emit('reload'); // io emits here as it is not rendering a page with a socket io
+			res.status(200);
+			res.send('OK');
+		};
+
+		db.polls.disableResult(callBack);
+	};
+
+	const disableVote = function (req, res) {
+		const callBack = (error, _results) => {
+			if (error) throw error;
+			res.status(200);
+			res.send('OK');
+		};
+
+		db.polls.disableVote(callBack);
+	};
+
+	const viewAdmin = function (req, res) {
+		try {
+			const callBack = (error, results) => {
+				if (error) throw error;
+				let result = {
+					allVotes: results,
+				};
+
+				res.render('pages/admin', result);
+			};
+
+			db.polls.selectVotes(callBack, io);
+		} catch (e) {
+			throw `ERROR FOUND! ERROR IS : ${e}`;
+		}
 	};
 
 	return {
@@ -107,7 +161,10 @@ module.exports = (io, db) => {
 		viewFemale,
 		viewGroup,
 		viewWinner,
+		viewAdmin,
 		notFound,
 		viewGratitude,
+		disableResult,
+		disableVote,
 	};
 };

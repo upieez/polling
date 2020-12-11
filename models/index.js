@@ -41,8 +41,40 @@ module.exports = (db) => {
 		});
 	};
 
+	const disableResult = (callback, _values, io) => {
+		db.getConnection(function (err, connection) {
+			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
+
+			let query = 'UPDATE polls SET Vote = 1 WHERE User = "disableResult"';
+
+			connection.query(query, (error, results) => {
+				connection.release();
+				// Handle error after the release.
+				error ? callback(error, null) : callback(null, results);
+				// Do not use anything here and below
+			});
+		});
+	};
+
+	const disableVote = (callback, _values, io) => {
+		db.getConnection(function (err, connection) {
+			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
+
+			let query = 'UPDATE polls SET Vote = 1 WHERE User = "disableVote"';
+
+			connection.query(query, (error, results) => {
+				connection.release();
+				// Handle error after the release.
+				error ? callback(error, null) : callback(null, results);
+				// Do not use anything here and below
+			});
+		});
+	};
+
 	return {
 		selectVotes,
 		postVote,
+		disableResult,
+		disableVote,
 	};
 };

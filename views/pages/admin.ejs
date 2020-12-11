@@ -15,6 +15,25 @@
 			<canvas id="voteGroup"></canvas>
 		</div>
 	</div>
+	<div>
+		<button
+			type="button"
+			class="btn btn-danger btn-lg btn-block"
+			id="disable-vote"
+		>
+			Disable Votes
+		</button>
+		<button
+			type="button"
+			class="btn btn-warning btn-lg btn-block"
+			id="disable-result"
+		>
+			Disable Results
+		</button>
+		<button type="button" class="btn btn-secondary btn-lg btn-block mb-3">
+			Display Results
+		</button>
+	</div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -175,9 +194,32 @@
 		maleChart.update();
 		groupChart.update();
 	});
+</script>
 
-	socket.on('reload', () => {
-		location.reload();
+<script>
+	const disableResultBtn = document.getElementById('disable-result');
+	const disableVoteBtn = document.getElementById('disable-vote');
+
+	disableResultBtn.addEventListener('click', async (_) => {
+		try {
+			const response = await fetch('/disableResult', {
+				method: 'post',
+			});
+			console.log('Completed!', response);
+		} catch (err) {
+			console.error(`Error: ${err}`);
+		}
+	});
+
+	disableVoteBtn.addEventListener('click', async (_) => {
+		try {
+			const response = await fetch('/disableVote', {
+				method: 'post',
+			});
+			console.log('Completed!', response);
+		} catch (err) {
+			console.error(`Error: ${err}`);
+		}
 	});
 </script>
 
