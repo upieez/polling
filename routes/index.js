@@ -39,6 +39,8 @@ const routes = (app, io, db) => {
 
 	app.post('/disableVote', controller.disableVote);
 
+	app.post('/enableFinalResult', controller.enableFinalResult);
+
 	app.get('/error', controller.notFound);
 };
 

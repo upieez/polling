@@ -41,7 +41,7 @@ module.exports = (db) => {
 		});
 	};
 
-	const disableResult = (callback, _values, io) => {
+	const disableResult = (callback, _values) => {
 		db.getConnection(function (err, connection) {
 			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
 
@@ -56,11 +56,26 @@ module.exports = (db) => {
 		});
 	};
 
-	const disableVote = (callback, _values, io) => {
+	const disableVote = (callback, _values) => {
 		db.getConnection(function (err, connection) {
 			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
 
 			let query = 'UPDATE polls SET Vote = 1 WHERE User = "disableVote"';
+
+			connection.query(query, (error, results) => {
+				connection.release();
+				// Handle error after the release.
+				error ? callback(error, null) : callback(null, results);
+				// Do not use anything here and below
+			});
+		});
+	};
+
+	const enableFinalResult = (callback, _values) => {
+		db.getConnection(function (err, connection) {
+			if (err) throw `DATABASE NOT CONNECTED: ${err}`; // not connected!
+
+			let query = 'UPDATE polls SET Vote = 1 WHERE User = "displayFinalResult"';
 
 			connection.query(query, (error, results) => {
 				connection.release();
@@ -76,5 +91,6 @@ module.exports = (db) => {
 		postVote,
 		disableResult,
 		disableVote,
+		enableFinalResult,
 	};
 };

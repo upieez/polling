@@ -30,8 +30,12 @@
 		>
 			Disable Results
 		</button>
-		<button type="button" class="btn btn-secondary btn-lg btn-block mb-3">
-			Display Results
+		<button
+			type="button"
+			class="btn btn-secondary btn-lg btn-block mb-3"
+			id="enable-final-result"
+		>
+			Display Final Results
 		</button>
 	</div>
 </div>
@@ -199,6 +203,7 @@
 <script>
 	const disableResultBtn = document.getElementById('disable-result');
 	const disableVoteBtn = document.getElementById('disable-vote');
+	const enableFinalResultBtn = document.getElementById('enable-final-result');
 
 	disableResultBtn.addEventListener('click', async (_) => {
 		try {
@@ -214,6 +219,17 @@
 	disableVoteBtn.addEventListener('click', async (_) => {
 		try {
 			const response = await fetch('/disableVote', {
+				method: 'post',
+			});
+			console.log('Completed!', response);
+		} catch (err) {
+			console.error(`Error: ${err}`);
+		}
+	});
+
+	enableFinalResultBtn.addEventListener('click', async (_) => {
+		try {
+			const response = await fetch('/enableFinalResult', {
 				method: 'post',
 			});
 			console.log('Completed!', response);

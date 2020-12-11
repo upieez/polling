@@ -9,7 +9,7 @@ module.exports = (io, db) => {
 				);
 
 				if (disableResult.Vote) {
-					res.render('pages/thankyou');
+					res.redirect('/thankyou');
 				}
 
 				let result = {
@@ -104,37 +104,29 @@ module.exports = (io, db) => {
 	};
 
 	const viewGratitude = function (_req, res) {
-		res.render('pages/thankyou');
+		try {
+			const callBack = (error, results) => {
+				if (error) throw error;
+
+				const displayFinalResult = results.find(
+					(result) => result.User === 'displayFinalResult'
+				);
+
+				if (displayFinalResult.Vote) {
+					res.redirect('/winner');
+				}
+
+				res.render('pages/thankyou');
+			};
+
+			db.polls.selectVotes(callBack, io);
+		} catch (e) {
+			throw `ERROR FOUND! ERROR IS : ${e}`;
+		}
 	};
 
 	const viewWinner = function (_req, res) {
 		res.render('pages/winner');
-	};
-
-	const notFound = function (_req, res) {
-		res.status(404);
-		res.render('pages/404');
-	};
-
-	const disableResult = function (req, res) {
-		const callBack = (error, _results) => {
-			if (error) throw error;
-			io.emit('reload'); // io emits here as it is not rendering a page with a socket io
-			res.status(200);
-			res.send('OK');
-		};
-
-		db.polls.disableResult(callBack);
-	};
-
-	const disableVote = function (req, res) {
-		const callBack = (error, _results) => {
-			if (error) throw error;
-			res.status(200);
-			res.send('OK');
-		};
-
-		db.polls.disableVote(callBack);
 	};
 
 	const viewAdmin = function (req, res) {
@@ -171,6 +163,43 @@ module.exports = (io, db) => {
 		}
 	};
 
+	const notFound = function (_req, res) {
+		res.status(404);
+		res.render('pages/404');
+	};
+
+	const disableResult = function (req, res) {
+		const callBack = (error, _results) => {
+			if (error) throw error;
+			io.emit('reload'); // io emits here as it is not rendering a page with a socket io
+			res.status(200);
+			res.send('OK');
+		};
+
+		db.polls.disableResult(callBack);
+	};
+
+	const disableVote = function (req, res) {
+		const callBack = (error, _results) => {
+			if (error) throw error;
+			res.status(200);
+			res.send('OK');
+		};
+
+		db.polls.disableVote(callBack);
+	};
+
+	const enableFinalResult = function (req, res) {
+		const callBack = (error, _results) => {
+			if (error) throw error;
+			io.emit('reload'); // io emits here as it is not rendering a page with a socket io
+			res.status(200);
+			res.send('OK');
+		};
+
+		db.polls.enableFinalResult(callBack);
+	};
+
 	return {
 		result,
 		vote,
@@ -184,5 +213,6 @@ module.exports = (io, db) => {
 		disableResult,
 		disableVote,
 		viewClient,
+		enableFinalResult,
 	};
 };
