@@ -44,7 +44,7 @@ module.exports = (io, db) => {
 
 				if (values.group) {
 					res.cookie('votedGroup', true);
-					return res.redirect(301, '/thankyou');
+					return res.redirect(301, '/result');
 				}
 
 				return res.redirect(301, '/thankyou'); // FALLBACK
