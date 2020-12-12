@@ -2,6 +2,7 @@
 const maleCtx = document.getElementById('voteMale').getContext('2d');
 const femaleCtx = document.getElementById('voteFemale').getContext('2d');
 const groupCtx = document.getElementById('voteGroup').getContext('2d');
+const tableContainer = document.getElementById('table-container');
 
 const options = {
 	maintainAspectRatio: false,
@@ -166,4 +167,38 @@ socket.on('update', (candidates) => {
 	femaleChart.update();
 	maleChart.update();
 	groupChart.update();
+
+	/**
+	 * maybe separate the logic here? might cause an issue
+	 */
+
+	const femaleDataArray = femaleChart.data.datasets;
+	const maleDataArray = maleChart.data.datasets;
+	const groupDataArray = groupChart.data.datasets;
+
+	const xAxis = ['Contestants', 'Votes'];
+	const yAxis = [...femaleDataArray, ...maleDataArray, ...groupDataArray];
+
+	const tableHeader = `<tr>${xAxis.reduce((memo, entry) => {
+		memo += `<th scope="col">${entry}</th>`;
+		return memo;
+	}, '')}</tr>`;
+
+	const tableBody = yAxis.reduce((memo, entry) => {
+		const rows = entry.data.reduce((memo, entry) => {
+			memo += `<td>${entry}</td>`;
+			return memo;
+		}, '');
+
+		memo += `<tr><td>${entry.label}</td>${rows}</tr>`;
+
+		return memo;
+	}, '');
+
+	const table = `<table class="table table-hover col-lg-6 col-xl-6">
+	<thead>${tableHeader}</thead>
+	<tbody>${tableBody}</tbody>
+	</table>`;
+
+	tableContainer.innerHTML = table;
 });
