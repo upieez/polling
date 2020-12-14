@@ -185,9 +185,9 @@ module.exports = (io, db) => {
 
 				if (displayFinalResult.Vote) {
 					res.render('pages/winner', { contestants: contestants });
+				} else {
+					res.redirect('/error');
 				}
-
-				res.redirect('/error');
 			};
 
 			db.polls.selectVotes(callBack);
