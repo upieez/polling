@@ -3,6 +3,8 @@ const disableVoteBtn = document.getElementById('disable-vote');
 const enableFinalResultBtn = document.getElementById('enable-final-result');
 
 disableResultBtn.addEventListener('click', async (_) => {
+	// CURRENTLY DOM MANIPULATION DOES NOT WORK
+	// ! FIGURE OUT WHAT IS WRONG WITH THE DOM
 	try {
 		if (confirm('Do you want to disable result?') === true) {
 			const response = await fetch('/disableResult', {

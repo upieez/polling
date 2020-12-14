@@ -22,8 +22,15 @@
 				type="button"
 				class="btn btn-danger btn-lg btn-block"
 				id="disable-vote"
+				<% if (admin.disableVote.Vote === 1) { %>
+				disabled 
+				<% } %>
 			>
+			<% if (admin.disableVote.Vote === 1) { %>
+				VOTING DISABLED
+				<% } else { %>
 				Disable Votes
+				<% } %> 
 			</button>
 		</div>
 		<div class="col-xl-4 col-lg-4 mt-3 mb-1">
@@ -31,8 +38,15 @@
 				type="button"
 				class="btn btn-warning btn-lg btn-block"
 				id="disable-result"
+				<% if (admin.disableResult.Vote === 1) { %>
+					disabled 
+				<% } %>
 			>
+			<% if (admin.disableResult.Vote === 1) { %>
+				RESULTS DISABLED
+			<% } else { %>
 				Disable Results
+			<% } %> 
 			</button>
 		</div>
 		<div class="col-xl-4 col-lg-4 mt-3 mb-3">
@@ -40,8 +54,15 @@
 				type="button"
 				class="btn btn-secondary btn-lg btn-block"
 				id="enable-final-result"
+				<% if (admin.displayFinalResult.Vote === 1) { %>
+					disabled 
+				<% } %>
 			>
+			<% if (admin.displayFinalResult.Vote === 1) { %>
+				FINAL RESULTS DISPLAYED
+			<% } else { %>
 				Display Final Results
+			<% } %> 
 			</button>
 		</div>
 	</div>

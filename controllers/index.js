@@ -200,11 +200,24 @@ module.exports = (io, db) => {
 		try {
 			const callBack = (error, results) => {
 				if (error) throw error;
-				let result = {
-					allVotes: results,
-				};
 
-				res.render('pages/admin', result);
+				const adminFunctions = results.reduce(
+					(acc, value) => {
+						if (value.User === 'disableVote') {
+							acc.disableVote = value;
+						}
+						if (value.User === 'disableResult') {
+							acc.disableResult = value;
+						}
+						if (value.User === 'displayFinalResult') {
+							acc.displayFinalResult = value;
+						}
+						return acc;
+					},
+					{ disableVote: {}, disableResult: {}, displayFinalResult: {} }
+				);
+
+				res.render('pages/admin', { admin: adminFunctions });
 			};
 
 			db.polls.selectVotes(callBack, io);
