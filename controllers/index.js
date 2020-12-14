@@ -126,7 +126,74 @@ module.exports = (io, db) => {
 	};
 
 	const viewWinner = function (_req, res) {
-		res.render('pages/winner');
+		try {
+			const callBack = (error, results) => {
+				if (error) throw error;
+
+				const displayFinalResult = results.find(
+					(result) => result.User === 'displayFinalResult'
+				);
+
+				const contestants = results.reduce(
+					(acc, value) => {
+						if (
+							value.User === 'FirstMale' ||
+							value.User === 'SecondMale' ||
+							value.User === 'ThirdMale'
+						) {
+							if (value.User === 'FirstMale') value.name = ['Male A', 'male1'];
+							if (value.User === 'SecondMale') value.name = ['Male B', 'male2'];
+							if (value.User === 'ThirdMale') value.name = ['Male C', 'male3'];
+
+							acc.male.push(value);
+						}
+
+						if (
+							value.User === 'FirstFemale' ||
+							value.User === 'SecondFemale' ||
+							value.User === 'ThirdFemale'
+						) {
+							if (value.User === 'FirstFemale')
+								value.name = ['Female A', 'female1'];
+							if (value.User === 'SecondFemale')
+								value.name = ['Female B', 'female2'];
+							if (value.User === 'ThirdFemale')
+								value.name = ['Female C', 'female3'];
+							acc.female.push(value);
+						}
+						if (
+							value.User === 'FirstGroup' ||
+							value.User === 'SecondGroup' ||
+							value.User === 'ThirdGroup'
+						) {
+							if (value.User === 'FirstGroup')
+								value.name = ['Family A', 'group1'];
+							if (value.User === 'SecondGroup')
+								value.name = ['Family B', 'group2'];
+							if (value.User === 'ThirdGroup')
+								value.name = ['Family C', 'group3'];
+							acc.group.push(value);
+						}
+						return acc;
+					},
+					{ male: [], female: [], group: [] }
+				);
+
+				contestants.male.sort((a, b) => (a.Vote < b.Vote ? 1 : -1));
+				contestants.female.sort((a, b) => (a.Vote < b.Vote ? 1 : -1));
+				contestants.group.sort((a, b) => (a.Vote < b.Vote ? 1 : -1));
+
+				if (displayFinalResult.Vote) {
+					res.render('pages/winner', { contestants: contestants });
+				}
+
+				res.redirect('/error');
+			};
+
+			db.polls.selectVotes(callBack);
+		} catch (e) {
+			throw `ERROR FOUND! ERROR IS : ${e}`;
+		}
 	};
 
 	const viewAdmin = function (req, res) {
